@@ -197,7 +197,7 @@ func (c *Client) Rset() error {
 
 // Retr downloads the given message and returns it as a mail.Message object.
 func (c *Client) Retr(msg int) (*enmime.Envelope, error) {
-	if _, err := c.conn.Cmd("%s 1", CommandRetrieve); err != nil {
+	if _, err := c.conn.Cmd("%s %d", CommandRetrieve, msg); err != nil {
 		return nil, fmt.Errorf("failed at RETR command: %w", err)
 	}
 
