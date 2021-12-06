@@ -1,11 +1,14 @@
 # POP3 Client
 
+[![codecov](https://codecov.io/gh/genert/pop3/branch/master/graph/badge.svg?token=FbkfA6zyZf)](https://codecov.io/gh/genert/pop3)
+
 POP3 Client written in Golang in accordance to [RFC1939](https://www.ietf.org/rfc/rfc1939.txt).
 
 ## Usage
 
 ### Initialize client
-```go
+
+```golang
 // Create a connection to the server
 c, err := pop3.DialTLS("REPLACE_THIS_SERVER_ADDRESS:993")
 if err != nil {
@@ -34,6 +37,7 @@ if err != nil {
 }
 
 log.Println(message.Text)
+log.Println(message.GetHeader("Subject"))
 
 if err := pc.Dele(1); err != nil {
     log.Fatal(err)

@@ -22,6 +22,7 @@ func TestIsOK(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
+		var tt = tt
 		t.Run(fmt.Sprintf(`IsOK should return %s for "%s" message`, strconv.FormatBool(tt.expectedResult), tt.message), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tt.expectedResult, pop3.IsOK(tt.message))
@@ -41,6 +42,7 @@ func TestIsErr(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
+		var tt = tt
 		t.Run(fmt.Sprintf(`IsErr should return %s for "%s" message`, strconv.FormatBool(tt.expectedResult), tt.message), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tt.expectedResult, pop3.IsErr(tt.message))

@@ -26,6 +26,8 @@ func TestConnection_Cmd(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
+		var tt = tt
+
 		var buffer []byte
 		buffer = make([]byte, 0)
 		var fake readWriteFaker
@@ -41,4 +43,17 @@ func TestConnection_Cmd(t *testing.T) {
 		assert.NotEmpty(t, t, response)
 		assert.Equal(t, fmt.Sprintf("%s\r\n", tt.command), string(buffer))
 	}
+}
+
+func TestConnection_Close(t *testing.T) {
+	var buffer []byte
+	buffer = make([]byte, 0)
+	var fake readWriteFaker
+	fake.Reader = strings.NewReader("+OK\r\n")
+	fake.Writer = &fakeWriter{buffer: &buffer}
+	fake.Closer = &fakeCloser{}
+
+	connection := pop3.NewConnection(fake)
+
+	assert.Nil(t, connection.Close())
 }
