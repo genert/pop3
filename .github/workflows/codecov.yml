@@ -1,0 +1,36 @@
+name: Code coverage generation
+on: [push]
+jobs:
+  codecov:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+          if [ -f Gopkg.toml ]; then
+           curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+           dep ensure
+          fi
+
+      - name: Generate coverage report
+        run: |
+          go test ./... -coverprofile=coverage.txt -covermode=atomic
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1.0.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
